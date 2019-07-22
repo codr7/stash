@@ -17,7 +17,7 @@ int main() {
   while (getline(cin, in)) {
     istringstream words(in);
     
-    while (!words.eof()) {
+    for (;;) {
       words >> w;
       if (words.fail()) { break; }
       
