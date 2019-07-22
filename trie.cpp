@@ -17,7 +17,23 @@ struct Trie {
     
     Node(T key): key(move(key)) {}
 
-    NodeIter find_key(const T &key) {
+    template <typename InT>
+    Node *find(const InT &in) { return find(in.begin(), in.end()); }
+      
+    template <typename InT>
+    Node *find(InT beg, InT end) {
+      Node *n(this);
+      
+      for (auto i(beg); i != end; i++) {
+        auto cn(n->get_child(*i));
+        if (cn == n->children.end()) { return nullptr; }
+        n = &*cn;
+      }
+
+      return n;
+    }
+
+    NodeIter get_child(const T &key) {
       for (auto i(children.begin()); i != children.end(); i++) {
         if (i->key >= key) { return i; }
       }
@@ -34,7 +50,7 @@ struct Trie {
       
       for (auto i(beg); i != end; i++) {
         const auto &k(*i);
-        auto cn(n->find_key(k));
+        auto cn(n->get_child(k));
         
         n = (cn == n->children.end() || cn->key != k)
           ? &*n->children.emplace(cn, k)
@@ -42,22 +58,6 @@ struct Trie {
       }
 
       n->is_end = true;
-      return n;
-    }
-
-    template <typename InT>
-    Node *search(const InT &in) { return search(in.begin(), in.end()); }
-      
-    template <typename InT>
-    Node *search(InT beg, InT end) {
-      Node *n(this);
-      
-      for (auto i(beg); i != end; i++) {
-        auto cn(n->find_key(*i));
-        if (cn == n->children.end()) { return nullptr; }
-        n = &*cn;
-      }
-
       return n;
     }
   };
@@ -71,7 +71,7 @@ int main() {
   Trie<char> t;
   t.root.insert(string("foo"))->insert(string("bar"));
   t.root.insert(string("baz"));
-  auto n(t.root.search(string("foob")));
+  auto n(t.root.find(string("foob")));
   assert(n && n->key == 'b');
   return 0;
 }
