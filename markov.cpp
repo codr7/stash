@@ -6,6 +6,7 @@
 
 #include "trie.hpp"
 
+#define MAX_ANS 3
 #define MAX_MEM 5
 
 template <typename T>
@@ -20,6 +21,15 @@ struct Node {
 
 using T = Trie<Node<string>>;
 using A = vector<pair<string, uint64_t>>;
+
+// finish load
+/// .stop at end of sentence
+/// lcase
+/// drop punctuation
+/// move scoring
+
+void load(T &db, const string &path) {
+}
 
 void get_answers(T &root, string words, uint64_t score, A &out) {  
   if (root.links.empty()) {
@@ -62,18 +72,20 @@ int main() {
 
       for (auto mb(m.begin()), me(mb + m_len); mb != me; mb++) {
         auto &a(db.insert(mb, me));
-        if (mb == m.begin()) { a.stop = true; }
         a.key.score++;
         ans.push_back(&a);
       }
     }
 
+    ans.back()->stop = true;
+    
     A as;
     for (T *an: ans) { get_answers(*an, an->key.word, an->key.score, as); }
     sort(as.begin(), as.end(), [](auto &x, auto &y) { return x.first < y.first; });
-    auto &a(as.back());
-    cout << a.second << ' ' << a.first << endl;
-  }
-  
-  // add :load support
+    uint64_t n(0);
+    
+    for (auto i(as.rbegin()); i != as.rend() && n < MAX_ANS; i++, n++) {
+      cout << i->second << ' ' << i->first << endl;
+    }
+  }  
 }
