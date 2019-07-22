@@ -10,9 +10,9 @@ struct Trie {
   T key;
   Links links;
   bool stop = false;
-    
-  Trie(T key = T()): key(move(key)) {}
 
+  Trie(T key = T()): key(move(key)) {}
+  
   template <typename InT>
   Trie *find(const InT &in) { return find(in.begin(), in.end()); }
       

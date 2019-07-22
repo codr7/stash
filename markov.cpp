@@ -34,6 +34,7 @@ int main() {
     }
   }
 
-  // pick longest answer
-  // echo query if none found
+  // add Node struct with word & score
+  /// add support for emplace of T on insert in Trie
+  // pick highest scored answer, echo query if none found
 }
