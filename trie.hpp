@@ -38,22 +38,21 @@ struct Trie {
   }
 
   template <typename InT>
-  Trie *insert(const InT &in) { return insert(in.begin(), in.end()); }
+  Trie &insert(const InT &in) { return insert(in.begin(), in.end()); }
     
   template <typename InT>
-  Trie *insert(InT beg, InT end) {
+  Trie &insert(InT beg, InT end) {
     Trie *t(this);
     
     for (auto i(beg); i != end; i++) {
       const auto &k(*i);
       auto l(t->get_link(k));
-      
+
       t = (l == t->links.end() || l->key != k)
         ? &*t->links.emplace(l, k)
         : &*l;
     }
     
-    t->stop = true;
-    return t;
+    return *t;
   }
 };
