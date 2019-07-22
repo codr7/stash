@@ -24,9 +24,11 @@ int main() {
       if (m_len == MAX_MEMORY) {
         auto beg(m.begin());
         rotate(beg, beg+1, m.end());
+        m.back() = w;
+      } else {
+        m[m_len++] = w;
       }
-
-      m[m_len++] = w;
+      
       auto a(db.insert(m.begin(), m.begin() + m_len));
       if (!a->stop) { ans.push_back(a); }
     }
