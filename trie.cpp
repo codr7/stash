@@ -64,7 +64,7 @@ struct Trie {
 
   Node root;
 
-  Trie(T root_key = T()): root(root_key) {}
+  Trie(T root_key = T()): root(move(root_key)) {}
   
   template <typename InT>
   Node *insert(const InT &in) { return root.insert(in); }
