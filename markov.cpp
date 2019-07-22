@@ -5,14 +5,26 @@
 
 #include "trie.hpp"
 
-#define MAX_MEMORY 3
+#define MAX_MEM 3
+
+template <typename T>
+struct Node {
+  T word;
+  uint64_t score;
+
+  Node(T word = T()): word(move(word)), score(1) {}
+  bool operator !=(const T &y) const { return word != y; }
+  bool operator >=(const Node &y) const { return word >= y.word; }
+};
 
 int main() {
-  Trie<string> db;
-  array<string, MAX_MEMORY> m;
+  using T = Trie<Node<string>>;
+  
+  T db;
+  array<string, MAX_MEM> m;
   size_t m_len(0);
   string in, w;
-  vector<Trie<string> *> ans;
+  vector<T *> ans;
   
   while (getline(cin, in)) {
     istringstream words(in);
@@ -21,7 +33,7 @@ int main() {
       words >> w;
       if (words.fail()) { break; }
       
-      if (m_len == MAX_MEMORY) {
+      if (m_len == MAX_MEM) {
         auto beg(m.begin());
         rotate(beg, beg+1, m.end());
         m.back() = w;
@@ -30,11 +42,14 @@ int main() {
       }
       
       auto a(db.insert(m.begin(), m.begin() + m_len));
-      if (!a->stop) { ans.push_back(a); }
+      
+      if (!a->stop) {
+        a->key.score++;
+        ans.push_back(a);
+      }
     }
   }
 
-  // add Node struct with word & score
-  /// add support for emplace of T on insert in Trie
   // pick highest scored answer, echo query if none found
+  // add :load support
 }
