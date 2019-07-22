@@ -17,7 +17,7 @@ struct Trie {
     
     Node(T key): key(move(key)) {}
 
-    NodeIter find(const T &key) {
+    NodeIter find_key(const T &key) {
       for (auto i(children.begin()); i != children.end(); i++) {
         if (i->key >= key) { return i; }
       }
@@ -34,7 +34,7 @@ struct Trie {
       
       for (auto i(beg); i != end; i++) {
         const auto &k(*i);
-        auto cn(n->find(k));
+        auto cn(n->find_key(k));
         
         n = (cn == n->children.end() || cn->key != k)
           ? &*n->children.emplace(cn, k)
@@ -53,7 +53,7 @@ struct Trie {
       Node *n(this);
       
       for (auto i(beg); i != end; i++) {
-        auto cn(n->find(*i));
+        auto cn(n->find_key(*i));
         if (cn == n->children.end()) { return nullptr; }
         n = &*cn;
       }
