@@ -65,25 +65,13 @@ struct Trie {
   Node root;
 
   Trie(T root_key = T()): root(move(root_key)) {}
-  
-  template <typename InT>
-  Node *insert(const InT &in) { return root.insert(in); }
-  
-  template <typename InT>
-  Node *insert(InT beg, InT end) { return root.insert(beg, end); }
-  
-  template <typename InT>
-  Node *search(const InT &in) { return root.search(in); }
-  
-  template <typename InT>
-  Node *search(InT beg, InT end) { return root.search(beg, end); }
 };
 
 int main() {
   Trie<char> t;
-  t.insert(string("foo"))->insert(string("bar"));
-  t.insert(string("baz"));
-  auto n(t.search(string("foob")));
+  t.root.insert(string("foo"))->insert(string("bar"));
+  t.root.insert(string("baz"));
+  auto n(t.root.search(string("foob")));
   assert(n && n->key == 'b');
   return 0;
 }
