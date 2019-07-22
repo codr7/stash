@@ -69,10 +69,11 @@ int main() {
     }
 
     A as;
-    for (T *an: ans) { get_answers(*an, "", 0, as); }
-    for (auto &a: as) { cout << a.second << ' ' << a.first << endl; }
+    for (T *an: ans) { get_answers(*an, an->key.word, an->key.score, as); }
+    sort(as.begin(), as.end(), [](auto &x, auto &y) { return x.first < y.first; });
+    auto &a(as.back());
+    cout << a.second << ' ' << a.first << endl;
   }
   
-  // pick highest scored answer
   // add :load support
 }

@@ -1,10 +1,10 @@
-#include <vector>
+#include <list>
 
 using namespace std;
 
 template <typename T>
 struct Trie {
-  using Links = vector<Trie>;
+  using Links = list<Trie>;
   using LinkIter = typename Links::iterator;
   
   T key;
